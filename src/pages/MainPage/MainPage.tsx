@@ -9,103 +9,117 @@ import { ChangeEvent } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { Link } from 'react-router-dom';
 import SliderFilter from 'components/Slider';
-import BreadCrumbs from 'components/BreadCrumbs';
 
-import { categories, mockSubscriptions } from '../../../consts';
+import { categories, mockOrders } from '../../../consts';
 
-export type Subscription = {
+export type Order = {
     id: number,
     title: string,
-    price: number,
-    info: string,
-    src: string,
-    idCategory: number,
-    categoryTitle: string,
-    status: string
+    status: string,
+    processor: string,
+    ghz: number,
+    ram: number,
+    ip: string,
+    availableos: string,
+    cost: number,
+    img: string,
+    processor_type_id: number;
 }
 
-export type ReceivedSubscriptionData = {
+export type ReceivedOrderData = {
     id: number,
     title: string,
-    price: number,
-    info: string,
-    src: string,
-    id_category: number,
-    category: string,
+    status: string,
+    processor: string,
+    ghz: number,
+    ram: number,
+    ip: string,
+    availableos: string,
+    cost: number,
+    img: string,
+    processor_type_id: number;
 }
 
 
 
 const MainPage: React.FC = () => {
-    const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+    const [orders, setOrders] = useState<Order[]>([]);
     const [categoryValue, setCategoryValue] = useState<string>(categories[0].value)
     const [titleValue, setTitleValue] = useState<string>('')
     const [priceValue, setPriceValue] = useState<number>()
     const [sliderValues, setSliderValues] = useState([0, 10000]);
     const linksMap = new Map<string, string>([
-        ['Абонементы', '/']
+        ['Виды Виртуальных машин', '/']
     ]);
 
-    const fetchSubscriptions = async () => {
-        let url = 'http://127.0.0.1:8000/subscriptions'
+    const fetchOrders = async () => {
+        let url = 'http://127.0.0.1:8000/api/orders/'
         if (titleValue) {
-            url += `?title=${titleValue}`
-            if (categoryValue && categoryValue !== 'Все категории') {
-                url += `&category=${categoryValue}`
+            url += `search/?title=${titleValue}`
+            if (categoryValue && categoryValue !== 'База процессора') {
+                url += `&type=${categoryValue}`
             }
             if (priceValue) {
                 url += `&max_price=${priceValue}`
             }
-        } else if(categoryValue && categoryValue !== 'Все категории') {
-            url += `?category=${categoryValue}`
+        } else if(categoryValue && categoryValue !== 'База процессора') {
+            url += `?type=${categoryValue}`
             if (priceValue) {
                 url += `&max_price=${priceValue}`
             }
         } else if (priceValue){
             url += `?max_price=${priceValue}`
         }
+        
         try {
             const response = await fetch(url, {
-                credentials: 'include'
+                
             });
             const jsonData = await response.json();
-            // const newRecipesArr = jsonData.subscriptions.map((raw: ReceivedSubscriptionData) => ({
-            const newRecipesArr = jsonData.map((raw: ReceivedSubscriptionData) => ({
+            console.log("hello")
+            // const newRecipesArr = jsonData.orders.map((raw: ReceivedOrderData) => ({
+            const newOrdersArr = jsonData.map((raw: ReceivedOrderData) => ({
                 id: raw.id,
                 title: raw.title,
-                price: raw.price,
-                info: raw.info,
-                src: raw.src,
-                categoryTitle: raw.category
-            }));
-        
-            setSubscriptions(newRecipesArr);
+                status: raw.status,
+                processor: raw.processor,
+                ghz: raw.ghz,
+                ram: raw.ram,
+                ip: raw.ip,
+                availableos: raw.availableos,
+                cost: raw.cost,
+                img: raw.img,
+                processor_type_id: raw.processor_type_id
+                }));
+                
+                setOrders(newOrdersArr);
         }
         catch {
             console.log('запрос не прошел !')
-            if (categoryValue && categoryValue !== 'Все категории') {
-                const filteredArray = mockSubscriptions.filter(mockSubscription => mockSubscription.categoryTitle === categoryValue);
-                setSubscriptions(filteredArray);
+            
+            if (categoryValue && categoryValue !== 'All') {
+                const filteredArray = mockOrders.filter(mockOrders => mockOrders.categoryTitle === categoryValue);
+                setOrders(filteredArray);
             } else if (titleValue) {
-                const filteredArray = mockSubscriptions.filter(mockSubscription => mockSubscription.title.includes(titleValue));
-                setSubscriptions(filteredArray);
+                const filteredArray = mockOrders.filter(mockOrders => mockOrders.title.includes(titleValue));
+                setOrders(filteredArray);
             } else if (priceValue) {
-                const filteredArray = mockSubscriptions.filter(mockSubscription => mockSubscription.price <= priceValue);
-                setSubscriptions(filteredArray);
+                const filteredArray = mockOrders.filter(mockOrders => mockOrders.price <= priceValue);
+                setOrders(filteredArray);
             }
             
             else {
-                setSubscriptions(mockSubscriptions);
+                setOrders(mockOrders);
             }
         }
         
     };
     useEffect(() => {
-        fetchSubscriptions();
+        fetchOrders();
     }, []);
 
     const handleSearchButtonClick = () => {
-        fetchSubscriptions();
+        fetchOrders();
     }
 
     const handleTitleValueChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -137,33 +151,33 @@ const MainPage: React.FC = () => {
         <div className={styles['main__page']}>
             <Header/>
             <div className={styles['content']}>
-                <BreadCrumbs links={linksMap}></BreadCrumbs>
-
                 <h1 className="mb-4" style={{fontSize: 30}}>
-                    Здесь вы можете подобрать выбрать для себя подходящий абонемент на какой-либо транспорт
+                    Здесь вы найдете подходящюю модель под ваши нужды
                 </h1>
 
                 <Form className="d-flex gap-3" onSubmit={handleFormSubmit}>
                     <div className='w-100'>
                         <Form.Group style={{height: 60}} className='w-100 mb-3' controlId="search__sub.input__sub">
-                            <Form.Control style={{height: '100%', borderColor: '#3D348B', fontSize: 18}} value={titleValue} onChange={handleTitleValueChange} type="text" placeholder="Введите название абонемента..." />
+                            <Form.Control style={{height: '100%', borderColor: '#3D348B', fontSize: 18}} value={titleValue} onChange={handleTitleValueChange} type="text" placeholder="Введите название модели" />
                         </Form.Group>
-                        <div style={{display: 'flex', gap: 10, width: '100%', justifyContent: 'space-between', alignItems: 'flex-end'}}>
-                            <Dropdown style={{minWidth: '40%'}} onSelect={handleCategorySelect}>
-                                <Dropdown.Toggle
-                                    style={{
-                                    height: 60,
-                                    borderColor: '#3D348B',
-                                    backgroundColor: "#fff",
-                                    color: '#000',
-                                    width: '100%',
-                                    textAlign: 'left',
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center',
-                                    paddingRight: '1rem',
-                                    fontSize: 18
-                                    }}
+                        <div style={{display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'flex-end'}}>
+                            <Dropdown  onSelect={handleCategorySelect}>
+                                <Dropdown.Toggle style={{  borderRadius: '20px'}}
+                                    variant="success"
+                                    id="dropdown-basic"
+                                >
+                                    {categoryValue}
+                                    <i className="bi bi-chevron-down"></i>
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu style={{width: '100%', textAlign: 'left'}}>
+                                    {categories.map(category => (
+                                        <Dropdown.Item key={category.key} eventKey={category.key}>{category.value}</Dropdown.Item>
+                                    ))}
+                                </Dropdown.Menu>
+                            </Dropdown>
+
+                            {/* <Dropdown onSelect={handleCategorySelect}>
+                                <Dropdown.Toggle className='but-style'
                                     variant="success"
                                     id="dropdown-basic"
                                 >
@@ -175,7 +189,7 @@ const MainPage: React.FC = () => {
                                         <Dropdown.Item key={category.key} eventKey={category.key}>{category.value}</Dropdown.Item>
                                     ))}
                                 </Dropdown.Menu>
-                            </Dropdown>
+                            </Dropdown> */}
                             <SliderFilter
                                 onChangeValues={handleSliderChange}
                                 minimum={0}
@@ -186,12 +200,20 @@ const MainPage: React.FC = () => {
                         
                     </div>
                     
-                    <Button style={{backgroundColor: "#2787F5", padding: "15px 40px", borderColor: "#000", fontSize: 18, height: 60}} onClick={() => handleSearchButtonClick()}>Найти</Button>
+                    <Button style={{padding: "15px 40px", borderRadius: '40px', fontSize: 18, height: 60}} onClick={() => handleSearchButtonClick()}>Найти</Button>
                 </Form>
 
                 <div className={styles["content__cards"]}>
-                    {subscriptions.map((subscription: Subscription) => (
-                        <OneCard id={subscription.id} src={subscription.src} onButtonClick={() => console.log('add to application')} title={subscription.title} category={subscription.categoryTitle} price={Number(subscription.price)}></OneCard>
+                    {orders.map((order: Order) => (
+                        <OneCard id={order.id}
+                        img={order.img}
+                        onButtonClick={() => console.log('добавлен в заявки')}
+                        title={order.title}
+                        processor={order.processor}
+                        processor_type_id={order.processor_type_id}
+                        // category={order.categoryTitle}
+                        cost={Number(order.cost)}
+                        ghz={order.ghz}></OneCard>
                     ))}
                 </div>
             </div>

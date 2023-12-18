@@ -7,10 +7,10 @@ const Header: React.FC = () => {
     return (
         <div className={styles.header}>
             <div className={styles.header__wrapper}>
-                <Link to='/' className={styles.header__logo}>TRAVEL PASS</Link>
+                <Link to='/' className={styles.header__logo}>VM RentHub</Link>
 
                 <div className={styles.header__blocks}>
-                    <Link className={styles.header__block} to='/'>Виды абонементов</Link>
+                    <Link className={styles.header__block} to='/'>Доступные ВМ</Link>
                     <Link className={styles.header__block} to='/'>Мои заявки</Link>
                     <Link className={styles.header__block} to='/'>Поддержка</Link>
                 </div>
