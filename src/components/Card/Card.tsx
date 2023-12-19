@@ -8,7 +8,6 @@ import styles from './Card.module.scss'
 export type CardProps = {
   id?: number,
   title?: React.ReactNode;
-  category?: React.ReactNode;
   ghz?: number;
   processor?: string;
   cost?: number;
@@ -18,7 +17,7 @@ export type CardProps = {
   onImageClick?: React.MouseEventHandler;
 };
 
-const OneCard: React.FC<CardProps> = ({id, title, category, ghz, processor, cost, img, processor_type_id, onButtonClick, onImageClick }) => {
+const OneCard: React.FC<CardProps> = ({id, title, ghz, processor, cost, img, processor_type_id, onButtonClick, onImageClick }) => {
   const src = img !== "null" ? `http://127.0.0.1:9000/test/user_img/${img}` : "https://www.solaredge.com/us/sites/nam/files/Placeholders/Placeholder-4-3.jpg";
   return (
     <Card>
@@ -40,6 +39,7 @@ const OneCard: React.FC<CardProps> = ({id, title, category, ghz, processor, cost
           <div className={styles['attribute-style']}>{cost} руб/мес</div>
           <div className={styles['attribute-style']}>{ghz} Ghz</div>
           <div className={styles['attribute-style']}>{processor}</div>
+          <div className={styles['attribute-style']}>{status}</div>
           <div className={styles['attribute-style']} > 
             {processor_type_id === 1 ? <img
             src={'http://127.0.0.1:9000/test/INTEL.png'}

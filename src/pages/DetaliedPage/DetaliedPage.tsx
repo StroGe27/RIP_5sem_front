@@ -23,34 +23,10 @@ type Order = {
     processor_type_id: number;
 };
 
-// export type ReceivedOrderData = {
-//     id: number,
-//     title: string,
-//     status: string,
-//     processor: string,
-//     ghz: number,
-//     ram: number,
-//     ip: string,
-//     availableos: string,
-//     cost: number,
-//     img: string,
-//     processor_type_id: number;
-// }
-
-
 const DetailedPage: React.FC = () => {
     const params = useParams();
     const id = params.id === undefined ? '' : params.id;
-    // const [linksMap, setLinksMap] = useState<Map<string, string>>(
-    //     new Map<string, string>([['Абонементы', '/']])
-    // );
-
     const [order, setOrder] = useState<Order>();
-    // const linksMap = new Map<string, string>([
-    //     ['Абонементы', '/']
-    // ]);
-    // let currentUrl = '/'
-
     const fetchOrder = async () => {
         try {
             const response = await fetch(`http://127.0.0.1:8000/api/orders/${id}/`);
@@ -63,7 +39,6 @@ const DetailedPage: React.FC = () => {
     };
     useEffect(() => {
         fetchOrder();
-        // console.log(currentUrl)
     }, []);
     const src = order?.img !== "null" ? `http://127.0.0.1:9000/test/user_img/${order?.img}` : "https://www.solaredge.com/us/sites/nam/files/Placeholders/Placeholder-4-3.jpg";
     console.log(src)
@@ -97,13 +72,3 @@ const DetailedPage: React.FC = () => {
 };
   
 export default DetailedPage;
-
-
-{/* <div style={{width: '55%'}}> */}
-{/* <h1 className='mb-4' style={{fontSize: 30}}>{subscription?.categoryTitle} "{subscription?.title}"</h1> */}
-{/* <h4>Цена на данное ВМ:  <strong>{subscription?.cost}р.</strong></h4> */}
-{/* <div className={styles.content__description}>
-<h4>Описание:</h4> */}
-{/* <p>{subscription?.title}</p> */}
-{/* </div> */}
-// </div>

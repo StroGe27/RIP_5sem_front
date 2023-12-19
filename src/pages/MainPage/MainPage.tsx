@@ -44,7 +44,7 @@ export type ReceivedOrderData = {
 
 const MainPage: React.FC = () => {
     const [orders, setOrders] = useState<Order[]>([]);
-    const [categoryValue, setCategoryValue] = useState<string>(categories[0].value)
+    const [typeValue, setTypeValue] = useState<string>(categories[0].value)
     const [titleValue, setTitleValue] = useState<string>('')
     const [priceValue, setPriceValue] = useState<number>()
     const [sliderValues, setSliderValues] = useState([0, 10000]);
@@ -53,31 +53,47 @@ const MainPage: React.FC = () => {
     ]);
 
     const fetchOrders = async () => {
-        let url = 'http://127.0.0.1:8000/api/orders/'
+        let url = 'http://127.0.0.1:8000/api/orders/search/?'
+
+        // if (titleValue) {
+        //     url += `search/?title=${titleValue}`
+
+
+        //     if (typeValue && typeValue !== 'All') {
+        //         url += `&type=${typeValue}`
+        //     }
+        //     if (priceValue) {
+        //         url += `&max_price=${priceValue}`
+        //     }
+        // } else if(typeValue && typeValue !== 'База процессора') {
+        //     url += `?type=${typeValue}`
+        //     if (priceValue) {
+        //         url += `&max_price=${priceValue}`
+        //     }
+        // } else if (priceValue){
+        //     url += `?max_price=${priceValue}`
+        // }
+        // let searching = ''
         if (titleValue) {
-            url += `search/?title=${titleValue}`
-            if (categoryValue && categoryValue !== 'База процессора') {
-                url += `&type=${categoryValue}`
-            }
-            if (priceValue) {
-                url += `&max_price=${priceValue}`
-            }
-        } else if(categoryValue && categoryValue !== 'База процессора') {
-            url += `?type=${categoryValue}`
-            if (priceValue) {
-                url += `&max_price=${priceValue}`
-            }
-        } else if (priceValue){
-            url += `?max_price=${priceValue}`
+            url += `title=${titleValue}`
+           
+            // if  (priceValue) {
+            //     url += `?max_price=${priceValue}`
+            // }
         }
-        
+        if (typeValue !== 'All'){
+            url += `&type=${typeValue}`
+        }
+        // if (!titleValue && !typeValue){
+        //     url += '?'
+        // }
+        url += `&lcost=${sliderValues[0]}`
+        url += `&rcost=${sliderValues[1]}`
+
+
         try {
-            const response = await fetch(url, {
-                
-            });
+            const response = await fetch(url);
             const jsonData = await response.json();
-            console.log("hello")
-            // const newRecipesArr = jsonData.orders.map((raw: ReceivedOrderData) => ({
             const newOrdersArr = jsonData.map((raw: ReceivedOrderData) => ({
                 id: raw.id,
                 title: raw.title,
@@ -97,8 +113,8 @@ const MainPage: React.FC = () => {
         catch {
             console.log('запрос не прошел !')
             
-            if (categoryValue && categoryValue !== 'All') {
-                const filteredArray = mockOrders.filter(mockOrders => mockOrders.categoryTitle === categoryValue);
+            if (typeValue && typeValue !== 'All') {
+                const filteredArray = mockOrders.filter(mockOrders => mockOrders.categoryTitle === typeValue);
                 setOrders(filteredArray);
             } else if (titleValue) {
                 const filteredArray = mockOrders.filter(mockOrders => mockOrders.title.includes(titleValue));
@@ -142,7 +158,7 @@ const MainPage: React.FC = () => {
         if (eventKey) {
           const selectedCategory = categories.find(category => category.key === eventKey);
           if (selectedCategory) {
-            setCategoryValue(selectedCategory.value);
+            setTypeValue(selectedCategory.value);
           }
         }
     };
@@ -166,7 +182,7 @@ const MainPage: React.FC = () => {
                                     variant="success"
                                     id="dropdown-basic"
                                 >
-                                    {categoryValue}
+                                    {typeValue}
                                     <i className="bi bi-chevron-down"></i>
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu style={{width: '100%', textAlign: 'left'}}>
@@ -181,7 +197,7 @@ const MainPage: React.FC = () => {
                                     variant="success"
                                     id="dropdown-basic"
                                 >
-                                    {categoryValue}
+                                    {typeValue}
                                     <i className="bi bi-chevron-down"></i>
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu style={{width: '100%', textAlign: 'left',}}>
@@ -192,15 +208,20 @@ const MainPage: React.FC = () => {
                             </Dropdown> */}
                             <SliderFilter
                                 onChangeValues={handleSliderChange}
-                                minimum={0}
-                                maximum={10000}
+                                minimum={10000}
+                                maximum={50000}
                                 title="Диапазон цен:"
                             />
                         </div>
                         
                     </div>
                     
-                    <Button style={{padding: "15px 40px", borderRadius: '40px', fontSize: 18, height: 60}} onClick={() => handleSearchButtonClick()}>Найти</Button>
+                    <Button style={{
+                        padding: "15px 40px",
+                        borderRadius: '40px',
+                        fontSize: 18,
+                        height: 60}}
+                        onClick={() => handleSearchButtonClick()}>Найти</Button>
                 </Form>
 
                 <div className={styles["content__cards"]}>
