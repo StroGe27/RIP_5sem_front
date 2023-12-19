@@ -76,17 +76,10 @@ const MainPage: React.FC = () => {
         // let searching = ''
         if (titleValue) {
             url += `title=${titleValue}`
-           
-            // if  (priceValue) {
-            //     url += `?max_price=${priceValue}`
-            // }
         }
         if (typeValue !== 'All'){
             url += `&type=${typeValue}`
         }
-        // if (!titleValue && !typeValue){
-        //     url += '?'
-        // }
         url += `&lcost=${sliderValues[0]}`
         url += `&rcost=${sliderValues[1]}`
 
@@ -112,21 +105,21 @@ const MainPage: React.FC = () => {
         }
         catch {
             console.log('запрос не прошел !')
+            // if (typeValue && typeValue !== 'All') {
+            //     const filteredArray = mockOrders.filter(mockOrders => mockOrders.processor_type_id === typeValue);
+            //     setOrders(filteredArray);
+            // } else if (titleValue) {
+            //     const filteredArray = mockOrders.filter(mockOrders => mockOrders.title.includes(titleValue));
+            //     setOrders(filteredArray);
+            // } else if (priceValue) {
+            //     const filteredArray = mockOrders.filter(mockOrders => mockOrders.cost <= priceValue);
+            //     setOrders(filteredArray);
+            // }
             
-            if (typeValue && typeValue !== 'All') {
-                const filteredArray = mockOrders.filter(mockOrders => mockOrders.categoryTitle === typeValue);
-                setOrders(filteredArray);
-            } else if (titleValue) {
-                const filteredArray = mockOrders.filter(mockOrders => mockOrders.title.includes(titleValue));
-                setOrders(filteredArray);
-            } else if (priceValue) {
-                const filteredArray = mockOrders.filter(mockOrders => mockOrders.price <= priceValue);
-                setOrders(filteredArray);
-            }
-            
-            else {
-                setOrders(mockOrders);
-            }
+            // else {
+            //     setOrders(mockOrders);
+            // }
+            setOrders(mockOrders);
         }
         
     };
