@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
+// import { Link } from 'react-router-dom';
+// import Button from 'react-bootstrap/Button';
 import Header from 'components/Header';
 import Image from "react-bootstrap/Image"
 import styles from './DetaliedPage.module.scss'
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { mockOrders } from '../../../consts'
+// import { mockOrders } from '../../../consts'
 
 type Order = {
     id: number,
@@ -16,7 +16,7 @@ type Order = {
     processor: string,
     ghz: number,
     ram: number,
-    ip: string,
+    // ip: string,
     availableos: string,
     cost: number,
     img: string,
@@ -28,19 +28,22 @@ const DetailedPage: React.FC = () => {
     const id = params.id === undefined ? '' : params.id;
     const [order, setOrder] = useState<Order>();
     const fetchOrder = async () => {
-        try {
-            const response = await fetch(`http://127.0.0.1:8000/api/orders/${id}/`);
-            const jsonData = await response.json();
-            setOrder(jsonData)
-        } catch {
-            const order = mockOrders.find(item => item.id === Number(id));
-            setOrder(order) // допилить
-        }
+        const response = await fetch(`http://127.0.0.1:8000/api/orders/${id}/`);
+        const jsonData = await response.json();
+        setOrder(jsonData)
+    //     try {
+    //         const response = await fetch(`http://127.0.0.1:8000/api/orders/${id}/`);
+    //         const jsonData = await response.json();
+    //         setOrder(jsonData)
+    //     } catch {
+    //         const order = mockOrders.find(item => item.id === Number(id));
+    //         // setOrder(order) // допилить
+    //     }
     };
     useEffect(() => {
         fetchOrder();
     }, []);
-    const src = order?.img !== "null" ? `http://127.0.0.1:9000/test/user_img/${order?.img}` : "https://www.solaredge.com/us/sites/nam/files/Placeholders/Placeholder-4-3.jpg";
+    const src = order?.img !== "NULL" ? `http://127.0.0.1:9000/test/user_img/${order?.img}` : "https://www.solaredge.com/us/sites/nam/files/Placeholders/Placeholder-4-3.jpg";
     console.log(src)
     return (
         <div className='main__page'>

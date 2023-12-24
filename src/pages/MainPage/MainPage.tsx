@@ -7,7 +7,7 @@ import styles from './MainPage.module.scss'
 import { useEffect, useState } from 'react';
 import { ChangeEvent } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import SliderFilter from 'components/Slider';
 
 import { categories, mockOrders } from '../../../consts';
@@ -19,7 +19,7 @@ export type Order = {
     processor: string,
     ghz: number,
     ram: number,
-    ip: string,
+    // ip: string,
     availableos: string,
     cost: number,
     img: string,
@@ -33,7 +33,7 @@ export type ReceivedOrderData = {
     processor: string,
     ghz: number,
     ram: number,
-    ip: string,
+    // ip: string,
     availableos: string,
     cost: number,
     img: string,
@@ -46,34 +46,14 @@ const MainPage: React.FC = () => {
     const [orders, setOrders] = useState<Order[]>([]);
     const [typeValue, setTypeValue] = useState<string>(categories[0].value)
     const [titleValue, setTitleValue] = useState<string>('')
-    const [priceValue, setPriceValue] = useState<number>()
+    // const [priceValue, setPriceValue] = useState<number>()
     const [sliderValues, setSliderValues] = useState([0, 10000]);
-    const linksMap = new Map<string, string>([
-        ['Виды Виртуальных машин', '/']
-    ]);
+    // const linksMap = new Map<string, string>([
+    //     ['Виды Виртуальных машин', '/']
+    // ]);
 
     const fetchOrders = async () => {
         let url = 'http://127.0.0.1:8000/api/orders/search/?'
-
-        // if (titleValue) {
-        //     url += `search/?title=${titleValue}`
-
-
-        //     if (typeValue && typeValue !== 'All') {
-        //         url += `&type=${typeValue}`
-        //     }
-        //     if (priceValue) {
-        //         url += `&max_price=${priceValue}`
-        //     }
-        // } else if(typeValue && typeValue !== 'База процессора') {
-        //     url += `?type=${typeValue}`
-        //     if (priceValue) {
-        //         url += `&max_price=${priceValue}`
-        //     }
-        // } else if (priceValue){
-        //     url += `?max_price=${priceValue}`
-        // }
-        // let searching = ''
         if (titleValue) {
             url += `title=${titleValue}`
         }
@@ -83,7 +63,7 @@ const MainPage: React.FC = () => {
         url += `&lcost=${sliderValues[0]}`
         url += `&rcost=${sliderValues[1]}`
 
-
+        console.log(url)
         try {
             const response = await fetch(url);
             const jsonData = await response.json();
@@ -94,7 +74,7 @@ const MainPage: React.FC = () => {
                 processor: raw.processor,
                 ghz: raw.ghz,
                 ram: raw.ram,
-                ip: raw.ip,
+                // ip: raw.ip,
                 availableos: raw.availableos,
                 cost: raw.cost,
                 img: raw.img,
@@ -135,9 +115,9 @@ const MainPage: React.FC = () => {
         setTitleValue(event.target.value);
     };
 
-    const handlePriceValueChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setPriceValue(Number(event.target.value));
-    };
+    // const handlePriceValueChange = (event: ChangeEvent<HTMLInputElement>) => {
+    //     setPriceValue(Number(event.target.value));
+    // };
 
     const handleSliderChange = (values: number[]) => {
         setSliderValues(values);
