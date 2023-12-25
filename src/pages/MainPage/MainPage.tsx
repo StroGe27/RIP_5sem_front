@@ -9,6 +9,7 @@ import { ChangeEvent } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 // import { Link } from 'react-router-dom';
 import SliderFilter from 'components/Slider';
+import BreadCrumbs from 'components/BreadCrumbs';
 
 import { categories, mockOrders } from '../../../consts';
 
@@ -48,9 +49,9 @@ const MainPage: React.FC = () => {
     const [titleValue, setTitleValue] = useState<string>('')
     // const [priceValue, setPriceValue] = useState<number>()
     const [sliderValues, setSliderValues] = useState([0, 10000]);
-    // const linksMap = new Map<string, string>([
-    //     ['Виды Виртуальных машин', '/']
-    // ]);
+    const linksMap = new Map<string, string>([
+        ['Доступные ВМ', '/']
+    ]);
 
     const fetchOrders = async () => {
         let url = 'http://127.0.0.1:8000/api/orders/search/?'
@@ -140,6 +141,7 @@ const MainPage: React.FC = () => {
         <div className={styles['main__page']}>
             <Header/>
             <div className={styles['content']}>
+                <BreadCrumbs links={linksMap}></BreadCrumbs>
                 <h1 className="mb-4" style={{fontSize: 30}}>
                     Здесь вы найдете подходящюю модель под ваши нужды
                 </h1>

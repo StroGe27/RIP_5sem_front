@@ -1,6 +1,7 @@
 import * as React from 'react';
 // import { Link } from 'react-router-dom';
 // import Button from 'react-bootstrap/Button';
+import BreadCrumbs from 'components/BreadCrumbs';
 import Header from 'components/Header';
 import Image from "react-bootstrap/Image"
 import styles from './DetaliedPage.module.scss'
@@ -24,12 +25,20 @@ type Order = {
 };
 
 const DetailedPage: React.FC = () => {
+    const [linksMap, setLinksMap] = useState<Map<string, string>>(
+        new Map<string, string>([['Доступные ВМ', '/']])
+    );
     const params = useParams();
     const id = params.id === undefined ? '' : params.id;
     const [order, setOrder] = useState<Order>();
     const fetchOrder = async () => {
         const response = await fetch(`http://127.0.0.1:8000/api/orders/${id}/`);
         const jsonData = await response.json();
+
+        const newLinksMap = new Map<string, string>(linksMap); // Копирование старого Map
+        newLinksMap.set(jsonData.title, '/subscription/' + id);
+        setLinksMap(newLinksMap)
+
         setOrder(jsonData)
     //     try {
     //         const response = await fetch(`http://127.0.0.1:8000/api/orders/${id}/`);
@@ -49,6 +58,7 @@ const DetailedPage: React.FC = () => {
         <div className='main__page'>
             <Header/>
             <div className={styles.content} style={{paddingTop: "90px"}}>
+                <BreadCrumbs links={linksMap}/>
                 <div className='d-flex gap-5'>
                     <Image
                         style={{ width: '45%' }}
