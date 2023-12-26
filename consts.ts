@@ -65,7 +65,7 @@ export const mockOrders = [
         "ip": "127.0.3.1",
         "processor_type_id": 1,
         "availableos": "3",
-        "cost": 16800,
+        "cost": 16900,
         "img": "NULL"
     }
 ]

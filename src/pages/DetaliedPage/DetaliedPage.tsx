@@ -8,7 +8,7 @@ import styles from './DetaliedPage.module.scss'
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-// import { mockOrders } from '../../../consts'
+import { mockOrders } from '../../../consts'
 
 type Order = {
     id: number,
@@ -17,7 +17,6 @@ type Order = {
     processor: string,
     ghz: number,
     ram: number,
-    // ip: string,
     availableos: string,
     cost: number,
     img: string,
@@ -32,28 +31,20 @@ const DetailedPage: React.FC = () => {
     const id = params.id === undefined ? '' : params.id;
     const [order, setOrder] = useState<Order>();
     const fetchOrder = async () => {
-        const response = await fetch(`http://127.0.0.1:8000/api/orders/${id}/`);
-        const jsonData = await response.json();
-
-        const newLinksMap = new Map<string, string>(linksMap); // Копирование старого Map
-        newLinksMap.set(jsonData.title, '/subscription/' + id);
-        setLinksMap(newLinksMap)
-
-        setOrder(jsonData)
-    //     try {
-    //         const response = await fetch(`http://127.0.0.1:8000/api/orders/${id}/`);
-    //         const jsonData = await response.json();
-    //         setOrder(jsonData)
-    //     } catch {
-    //         const order = mockOrders.find(item => item.id === Number(id));
-    //         // setOrder(order) // допилить
-    //     }
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/orders/${id}/');
+            const jsonData = await response.json();
+            setOrder(jsonData)
+        } catch {
+            const order = mockOrders.find(item => item.id === Number(id));
+            setOrder(order)
+        }
     };
     useEffect(() => {
         fetchOrder();
     }, []);
     const src = order?.img !== "NULL" ? `http://127.0.0.1:9000/test/user_img/${order?.img}` : "https://www.solaredge.com/us/sites/nam/files/Placeholders/Placeholder-4-3.jpg";
-    console.log(src)
+    // console.log(src)
     return (
         <div className='main__page'>
             <Header/>
@@ -72,9 +63,17 @@ const DetailedPage: React.FC = () => {
                         <p>Processor: {order?.processor}</p>
                         <p>GHz: {order?.ghz}</p>
                         <p>RAM: {order?.ram}</p>
-                        <p>Available OS: {order?.availableos}</p>
+                        {/* <p>Available OS id: {order?.availableos}</p> */}
+                        <p>Available OS: {order?.availableos === "1" ? 'Ubuntu' :
+                                        order?.availableos === "2" ? 'Ubuntu + Windows' :
+                                        order?.availableos === "3" ? 'Ubuntu + Fedora' :
+                                        order?.availableos === "4" ? 'Windows' :
+                                        order?.availableos === "5" ? 'Windows + Fedora' :
+                                        order?.availableos === "6" ? 'Fedora' :
+                                        order?.availableos === "7" ? 'Windows + Ubuntu + Fedora' :
+                         ''}</p>
                         <p>Cost: {order?.cost}</p>
-                        <p>Img-src: {order?.img}</p>
+                        {/* <p>Img-src: {order?.img}</p> */}
                         </div>
                     </div>
                     

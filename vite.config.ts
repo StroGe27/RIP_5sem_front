@@ -26,7 +26,7 @@ export default defineConfig({
     //   'api/': 'http://localhost:8000'
     // },
   },
-  base: "/",
+  base: "/RIP_5sem_front/",
   plugins: [react()],
   resolve: {
     alias: parseTsConfigPaths(tsconfig.compilerOptions.paths),
