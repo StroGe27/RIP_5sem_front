@@ -53,7 +53,7 @@ const MainPage: React.FC = () => {
     // ]);
 
     const fetchOrders = async () => {
-        let url = 'http://172.28.112.1:8000/api/orders/search/?'
+        let url = 'http://127.0.0.1:8000/api/orders/search/?'
         if (titleValue) {
             url += `title=${titleValue}`
         }
