@@ -86,6 +86,10 @@ const MainPage: React.FC = () => {
         }
         catch {
             console.log('запрос не прошел !')
+            // эта часть отвечает за моки, когда не работает рервис
+            // необходимо допилить
+
+            
             // if (typeValue && typeValue !== 'All') {
             //     const filteredArray = mockOrders.filter(mockOrders => mockOrders.processor_type_id === typeValue);
             //     setOrders(filteredArray);

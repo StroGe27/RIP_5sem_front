@@ -32,9 +32,12 @@ const DetailedPage: React.FC = () => {
     const [order, setOrder] = useState<Order>();
     const fetchOrder = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/orders/${id}/');
+            const response = await fetch(`http://127.0.0.1:8000/api/orders/${id}/`);
             const jsonData = await response.json();
             setOrder(jsonData)
+            const newLinksMap = new Map<string, string>(linksMap); // Копирование старого Map
+            newLinksMap.set(jsonData.title, '/orders/' + id);
+            setLinksMap(newLinksMap)
         } catch {
             const order = mockOrders.find(item => item.id === Number(id));
             setOrder(order)

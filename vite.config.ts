@@ -21,10 +21,9 @@ const parseTsConfigPaths = (paths: Record<string, string[]>): Record<string, str
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
-    port: 8000
-    // proxy: {
-    //   'api/': 'http://localhost:8000'
-    // },
+    proxy: {
+      '/api/orders/': 'http://localhost:8080'
+    },
   },
   base: "/RIP_5sem_front/",
   plugins: [react()],

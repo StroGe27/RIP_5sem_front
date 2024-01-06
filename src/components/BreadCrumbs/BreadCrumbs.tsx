@@ -1,29 +1,33 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styles from './BreadCrumbs.module.scss'
-import ArrowIcon from 'components/Icons/ArrowIcon'
 
 export type BreadCrumbsProps = {
   links: Map<string, string>;
 }
 
-const BreadCrumbs: React.FC<BreadCrumbsProps> = ({links}) => {
+const BreadCrumbs: React.FC<BreadCrumbsProps> = ({ links }) => {
   return (
     <div className={styles.breadcrumbs}>
-    {Array.from(links.entries()).map(([key, value], index) => (
-      <span
-          key={key}
-          className={`${styles.breadcrumbs__item} ${index === links.size - 1 ? styles['breadcrumbs__item-last'] : ''}`}
-        >
-        <Link className={`${styles['breadcrumbs__item-link']} ${index === links.size - 1 ? styles['breadcrumbs__item-last'] : ''}`} to={value}>
-          {key}
-        </Link>
-        {index !== links.size - 1 && 
-        <span className={styles['breadcrumbs__item-icon']}><ArrowIcon /></span>}
-      </span>
-    ))}
-  </div>
-  )
-}
+      {Array.from(links.entries()).map(([key, value], index) => (
+        <React.Fragment key={index /* Используйте index в качестве уникального ключа */}>
+          {index < links.size - 1 ? (
+            <Link to={value} className={styles.breadcrumbs__item}>
+              <span className={styles.breadcrumbs__item_link}>{key}</span>
+            </Link>
+          ) : (
+            <div className={styles.breadcrumbs__item_last}>
+              {key}
+            </div>
+          )}
+      {/* Для всех элементов кроме последнего выводим разделитель в виде стрелки */}
+        {index < links.size - 1 && (
+          <div className={styles.breadcrumbs__item_icon}> / </div>
+        )}
+      </React.Fragment>
+      ))}
+    </div>
+  );
+};
 
 export default  BreadCrumbs

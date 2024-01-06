@@ -27,7 +27,7 @@ export const mockOrders = [
         "processor_type_id": 1,
         "availableos": "5",
         "cost": 49800,
-        "img": "NULL"
+        "img": "4.png"
     },
     {
         "id": 8,
@@ -40,7 +40,7 @@ export const mockOrders = [
         "processor_type_id": 1,
         "availableos": "1",
         "cost": 11900,
-        "img": "1.jpg"
+        "img": "8.png"
     },
     {
         "id": 1,
@@ -53,7 +53,7 @@ export const mockOrders = [
         "processor_type_id": 1,
         "availableos": "2",
         "cost": 15600,
-        "img": "NULL"
+        "img": "1.png"
     },
     {
         "id": 2,
@@ -66,6 +66,6 @@ export const mockOrders = [
         "processor_type_id": 1,
         "availableos": "3",
         "cost": 16900,
-        "img": "NULL"
+        "img": "2.png"
     }
 ]
