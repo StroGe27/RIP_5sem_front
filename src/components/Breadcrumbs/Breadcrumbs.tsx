@@ -2,23 +2,18 @@ import "./Breadcrumbs.sass"
 import { Link, useLocation } from "react-router-dom";
 import {FaChevronRight} from "react-icons/fa6";
 import {FaHome} from "react-icons/fa";
-import {useTariff} from "../../hooks/tariffs/useTariff";
-import {useOrder} from "../../hooks/orders/useOrder";
+import {Tariff} from "../../Types";
+import {Dispatch} from "react";
 
-const Breadcrumbs = () => {
+
+const Breadcrumbs = ({ selectedTariff, setSelectedTariff }: { selectedTariff: Tariff | undefined, setSelectedTariff: Dispatch<Tariff | undefined> }) => {
 
     const location = useLocation()
 
-    const {tariff, setTariff} = useTariff()
-
-    const { order, is_draft } = useOrder()
-
     let currentLink = ''
 
-    const resetSelectedTariff = () => setTariff(undefined)
-
     const topics = {
-        "tariffs": "Тарифы",
+        "tariff": "Тарифы",
         "orders": "Заявки",
         "home": "Главная",
         "login": "Вход",
@@ -26,22 +21,18 @@ const Breadcrumbs = () => {
         "profile": "Личный кабинет"
     }
 
-    const exclude_topics = ["edit", "create"]
+    const resetSelectedTariff = () => setSelectedTariff(undefined)
 
     const crumbs = location.pathname.split('/').filter(crumb => crumb !== '').map(crumb => {
 
         currentLink += `/${crumb}`
-
-        if (exclude_topics.find(x => x == crumb)) {
-            return
-        }
 
         if (Object.keys(topics).find(x => x == crumb)) {
             return (
                 <div className={"crumb"} key={crumb}>
 
                     <Link to={currentLink} onClick={resetSelectedTariff}>
-                        { topics[crumb] }
+                        { (topics as never)[crumb] }
                     </Link>
 
                     <FaChevronRight className={"chevron-icon"}/>
@@ -56,22 +47,7 @@ const Breadcrumbs = () => {
                 <div className={"crumb"} key={crumb}>
 
                     <Link to={currentLink}>
-                        {is_draft ? "Новая заяка" : "Заявка №" + order?.id}
-                    </Link>
-
-                    <FaChevronRight className={"chevron-icon"}/>
-
-                </div>
-            )
-        }
-
-        if (currentLink.match(new RegExp('tariffs/(\d*)')))
-        {
-            return (
-                <div className={"crumb"} key={crumb}>
-
-                    <Link to={currentLink}>
-                        {tariff?.name}
+                    { selectedTariff?.name }
                     </Link>
 
                     <FaChevronRight className={"chevron-icon"}/>
@@ -87,7 +63,7 @@ const Breadcrumbs = () => {
 
                 <div className="crumb">
 
-                    <Link to={"/tariffs"}>
+                    <Link to={"/tariff"}>
                         <FaHome className="home-icon" />
                     </Link>
 

@@ -1,108 +1,60 @@
 import "./styles/Main.sass"
 import "./styles/Reset.sass"
+import { useState } from 'react'
 import Header from "./components/Header/Header";
+import {Tariff} from "./Types";
 import Breadcrumbs from "./components/Breadcrumbs/Breadcrumbs";
-import {BrowserRouter, Route, Routes, Navigate, useLocation} from 'react-router-dom';
+import {BrowserRouter, Route, Routes, Navigate} from 'react-router-dom';
+
 import TariffPage from "./pages/TariffPage/TariffPage";
+import ServiceList from "./pages/ServiceList/ServiceList";
+import AboutPage from "./pages/AboutPage/AboutPage";
+import ContactsPage from "./pages/ContactsPage/ContactsPage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
-import {QueryClient, QueryClientProvider } from "react-query";
-import {Provider} from "react-redux"
-import store from "./store/store"
-// import TariffsPage from "./pages/TariffsPage/TariffsPage";
-
-import LoginPage from "./pages/LoginPage/LoginPage";
-import RegisterPage from "./pages/RegisterPage/RegisterPage";
-import {useAuth} from "./hooks/users/useAuth";
-import OrderConstructor from "./components/OrderConstructor/OrderConstructor";
-import OrderPage from "./pages/OrderPage/OrderPage";
-import OrdersPage from "./pages/OrdersPage/OrdersPage";
-
-// Надо изменить роуты
-import TariffsEditPage from "./pages/TariffEditPage/TariffEditPage";
-import TariffsAddPage from "./pages/TariffAddPage/TariffAddPage";
-import TariffsTableWrapper from "./pages/TariffsPage/TariffTableWrapper/TariffsTableWrapper";
-import TariffsList from "./pages/TariffsPage/TariffsList/TariffsList";
-// import TariffsList from "./pages/TariffsPage/TariffsList/ServicesList";
 
 
-const TopPanelWrapper = () => {
-
-    const {is_authenticated, is_moderator} = useAuth()
-
-    const location = useLocation()
-
-    return (
-        <div className="top-panel-wrapper">
-            <Breadcrumbs />
-            {is_authenticated && !is_moderator && location.pathname.endsWith("tariffs") && <OrderConstructor /> }
-        </div>
-    )
-}
 
 
 function App() {
 
-    const queryClient = new QueryClient()
+    const [selectedTariff, setSelectedTariff] = useState<Tariff | undefined>(undefined)
 
     return (
-        <QueryClientProvider client={queryClient}>
+       <BrowserRouter basename="/rent">
 
-            <Provider store={store}>
+            <div className="App">
 
-                <BrowserRouter basename="/rent">
+                <div className="wrapper">
 
-                    <div className="App">
+                    <Header />
 
-                        <div className="wrapper">
+                    <div className={"content-wrapper"}>
 
-                            <Header />
+                        <Breadcrumbs selectedTariff={selectedTariff} setSelectedTariff={setSelectedTariff}/>
 
-                            <div className={"content-wrapper"}>
+                        <Routes>
 
-                                <TopPanelWrapper />
+                            <Route path="/" element={<Navigate to="/tariff" replace />} />
 
-                                <Routes>
+                            <Route path="/about" element={<AboutPage />} />
 
-                                    <Route path="/" element={<Navigate to="/tariffs" replace />} />
+                            <Route path="/contacts" element={<ContactsPage />} />
 
-                                    <Route path="/profile" element={<ProfilePage />} />
+                            <Route path="/profile" element={<ProfilePage />} />
 
-                                    <Route path="/tariffs" element={<TariffsList />} />
+                            <Route path="/tariff" element={<ServiceList />} />
 
-                                    {/* Сделал (проверяю) */}
-                                    <Route path="/tariffs-table" element={<TariffsTableWrapper />} />
+                            <Route path="/tariffs/:id" element={<TariffPage selectedTariff={selectedTariff} setSelectedTariff={setSelectedTariff} />} />
 
-                                    {/* Сделал (как открыть) */}
-                                    <Route path="/tariffs/add" element={<TariffsAddPage />} />
-
-                                    <Route path="/tariffs/:id" element={<TariffPage />} />
-
-                                    {/* Сделал (как открыть) */}
-                                    <Route path="/tariffs/:id/edit" element={<TariffsEditPage />} /> 
-
-                                    <Route path="/profile" element={<ProfilePage />} />
-
-                                    <Route path="/orders/:id" element={<OrderPage />} />
-
-                                    <Route path="/orders" element={<OrdersPage />} />
-
-                                    <Route path="/login" element={<LoginPage />} />
-
-                                    <Route path="/register" element={<RegisterPage />} />
-
-                                </Routes>
-
-                            </div>
-
-                        </div>
+                        </Routes>
 
                     </div>
 
-                </BrowserRouter>
+                </div>
 
-            </Provider>
+            </div>
 
-        </QueryClientProvider>
+        </BrowserRouter>
     )
 }
 

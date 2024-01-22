@@ -1,50 +1,26 @@
 import "./NavMenu.sass"
 import {Link} from "react-router-dom";
-import {useAuth} from "../../../hooks/users/useAuth";
-import {useEffect, useState} from "react";
-import Hamburger from "../Hamburger/Hamburger";
 
 const NavMenu = () => {
-
-    const {is_moderator, is_authenticated, auth, user_name} = useAuth()
-    const [isOpen, setIsOpen] = useState(false)
-
-    useEffect(() => {
-        auth()
-    }, [])
-
     return (
         <div className="menu-wrapper">
 
-            <Link to="/tariffs" className="menu-item">
+            <Link to="/about" className="menu-item">
+                <span>О нас</span>
+            </Link>
+
+            <Link to="/tariff" className="menu-item">
                 <span>Тарифы</span>
             </Link>
 
-            {is_moderator &&
-                <Link to="/tariffs-table" className="menu-item">
-                    <span>Таблица тарифов</span>
-                </Link>
-            }
+            <Link to="/contacts" className="menu-item">
+                <span>Контакты</span>
+            </Link>
 
-            {is_authenticated &&
-                <Link to="/orders" className="menu-item">
-                    <span>Заявки</span>
-                </Link>
-            }
+            <Link to="/profile" className="menu-item">
+                <span>Личный кабинет</span>
+            </Link>
 
-            {is_authenticated &&
-                <Link to="/profile" className="menu-item">
-                    <span>{user_name}</span>
-                </Link>
-            }
-
-            {!is_authenticated &&
-                <Link to="/login" className="menu-item">
-                    <span>Вход</span>
-                </Link>
-            }
-
-            <Hamburger isOpen={isOpen} setIsOpen={setIsOpen} />
         </div>
     )
 }

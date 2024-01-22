@@ -1,24 +1,52 @@
 import "./TariffPage.sass"
-import {useEffect} from "react";
+import {Dispatch, useEffect, useState} from "react";
 import {Link, useParams} from "react-router-dom";
-import {useTariff} from "../../hooks/tariffs/useTariff";
+import {iTariffMock, requestTime} from "../../Consts";
+import {Tariff} from "../../Types";
+import mockImage from "/src/assets/mock.png"
 
-const TariffPage = () => {
+const TariffPage = ({ selectedTariff, setSelectedTariff }: { selectedTariff:Tariff | undefined, setSelectedTariff: Dispatch<Tariff | undefined>}) => {
 
     const { id } = useParams<{id: string}>();
     
-    const {tariff, fetchTariff} = useTariff()
-    
+    const [isMock, setIsMock] = useState<boolean>(false);
+
     useEffect(() => {
-        id && fetchTariff(id)
+        fetchData()
     }, [])
 
-    if (tariff == undefined) {
-        return (
-            <div>
+    if (id == undefined){
+        return;
+    }
+    
+    const fetchData = async () => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/tariffs/${id}`, {
+                method: "GET",
+                signal: AbortSignal.timeout(requestTime)
+            });
 
-            </div>
-        )
+            if (!response.ok)
+            {
+                CreateMock()
+                return;
+            }
+
+            const tariff: Tariff = await response.json()
+
+            setSelectedTariff(tariff)
+
+            setIsMock(false)
+        } catch
+        {
+            CreateMock()
+        }
+
+    };
+
+    const CreateMock = () => {
+        setSelectedTariff(iTariffMock.find((tariff:Tariff) => tariff?.id == parseInt(id)))
+        setIsMock(true)
     }
 
     const img = `http://127.0.0.1:8000/api/tariffs/${id}/image/`
@@ -32,7 +60,7 @@ const TariffPage = () => {
 
             <div className="left">
 
-                <img src={img}  alt=""/>
+                <img src={isMock ? mockImage : img} />
 
             </div>
 
@@ -40,23 +68,11 @@ const TariffPage = () => {
 
                 <div className="info-container">
 
-                    <h2>{tariff.name}</h2>
+                    <h2 className="name">{selectedTariff?.name}</h2>
 
                     <br />
 
-                    <span>Описание: {tariff.description}</span>
-
-                    <br />
-
-                    <span>Оперативная память: {tariff.ram} гб</span>
-
-                    <br />
-
-                    <span>Размер SSD хранилища: {tariff.ssd} гб</span>
-
-                    <br />
-
-                    <span>Цена за месяц аренды: {tariff.price} рублей</span>
+                    <span className="description">{selectedTariff?.description}</span>
 
                 </div>
 
