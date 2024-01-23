@@ -12,14 +12,10 @@ const OrdersFilters = ({refetch}) => {
     const {is_moderator} = useAuth()
 
     const {status, setStatus, date_start, setDateStart, date_end, setDateEnd, user, setUser} = useOrders()
-    // const {status, setStatus, date_start, setDateStart, date_end, setDateEnd, user, setUser, name, setName} = useOrders()
 
-    
     const handleSubmit = (e) => {
-        console.log("e")
         e.preventDefault()
         refetch()
-        
     }
 
     return (
@@ -27,11 +23,12 @@ const OrdersFilters = ({refetch}) => {
 
             <div className="top-container">
 
-                <h3>Таблица тарифов</h3>
+                <h3>Список косметики</h3>
 
             </div>
 
             <form className="bottom-container" onSubmit={handleSubmit}>
+
                 <DropdownMenu
                     width={175}
                     options={is_moderator ? ADMIN_STATUSES : USER_STATUSES}
@@ -41,27 +38,14 @@ const OrdersFilters = ({refetch}) => {
                     }}
                 />
 
-                <CustomDatePicker
-                    placeholder="От"
-                    value={date_start}
-                    setValue={setDateStart}
-                    disabled={undefined}/>
+                <CustomDatePicker placeholder="От" value={date_start} setValue={setDateStart}/>
 
-                <CustomDatePicker
-                    placeholder="До"
-                    value={date_end}
-                    setValue={setDateEnd}
-                    disabled={undefined}/>
+                <CustomDatePicker placeholder="До" value={date_end} setValue={setDateEnd}/>
 
-                {is_moderator && <SearchBar
-                    query={user}
-                    setQuery={setUser}
-                    placeholder="Поиск по пользователям..."
-                    onSubmit={handleSubmit} />}
-
+                {is_moderator && <SearchBar query={user} setQuery={setUser} placeholder="Поиск по пользователям..." onSubmit={handleSubmit} />}
 
                 <CustomButton bg={variables.primary}>
-                    Применить111
+                    Применить
                 </CustomButton>
 
             </form>

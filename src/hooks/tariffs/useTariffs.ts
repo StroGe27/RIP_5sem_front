@@ -6,7 +6,6 @@ import {
 import {api} from "../../utils/api";
 import {useOrder} from "../orders/useOrder";
 import {useToken} from "../users/useToken";
-import {AxiosRequestConfig} from "axios";
 
 export function useTariffs() {
 	const tariffs = useSelector(state => state.tariffs.tariffs);
@@ -27,7 +26,7 @@ export function useTariffs() {
 	}
 
 	const searchTariffs = async (navigate=null) => {
-		
+
 		const {data} = await api.get(`tariffs/search/`, {
 			params: {
 				query: query
@@ -39,17 +38,13 @@ export function useTariffs() {
 
 		const draft_order_id = data["draft_order_id"]
 		if (draft_order_id) {
-			fetchOrder(draft_order_id)
+			await fetchOrder(draft_order_id)
 		} else {
 			setOrder(undefined)
-			navigate && location.pathname.includes("orders") && navigate("/")
+			navigate && navigate("/")
 		}
 
 		return data["tariffs"]
-	}
-
-	const fetchTariffs = async () => {
-		searchTariffs().then(data => setTariffs(data))
 	}
 
 	return {
@@ -57,7 +52,6 @@ export function useTariffs() {
 		setTariffs,
 		query,
 		setQuery,
-		searchTariffs,
-		fetchTariffs
+		searchTariffs
 	};
 }

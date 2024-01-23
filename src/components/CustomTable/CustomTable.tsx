@@ -50,7 +50,6 @@ const CustomTable = ({getTableBodyProps, headerGroups, page, prepareRow, isLoadi
                                 {row.cells.map(cell => {
                                     return <td {...cell.getCellProps()}>
                                         {cell.column.id === 'id' ? i + 1 : cell.render('Cell')}
-                                        
                                     </td>
                                 })}
                             </tr>

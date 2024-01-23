@@ -3,7 +3,7 @@ import {
 	updateTariff,
 	updateName,
 	updateDescription,
-	updatePrice,
+	updateHeatOutput,
 	updateImage
 } from "../../store/tariffs/tariffSlice";
 import {api} from "../../utils/api";
@@ -25,8 +25,8 @@ export function useTariff() {
 		dispatch(updateDescription(value))
 	}
 
-	const setPrice = (value) => {
-		dispatch(updatePrice(value))
+	const setHeatOutput = (value) => {
+		dispatch(updateHeatOutput(value))
 	}
 
 	const setImage = (value) => {
@@ -47,7 +47,7 @@ export function useTariff() {
 		fetchTariff,
 		setName,
 		setDescription,
-		setPrice,
+		setHeatOutput,
 		setImage
 	};
 }

@@ -4,6 +4,7 @@ import {useAuth} from "../../hooks/users/useAuth";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import avatar from "/src/assets/avatar.png"
 import {useEffect} from "react";
+import {variables} from "../../utils/consts";
 
 const ProfilePage = () => {
 
@@ -34,7 +35,7 @@ const ProfilePage = () => {
 				<span>Почта: {user_email}</span>
 				<span>Статус: {is_moderator ? "Модератор" : "Пользователь"}</span>
 
-				<CustomButton onClick={doLogOut}>Выйти</CustomButton>
+				<CustomButton bg={variables.primary} onClick={doLogOut}>Выйти</CustomButton>
 
 			</div>
 

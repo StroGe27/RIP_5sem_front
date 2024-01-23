@@ -1,7 +1,6 @@
 import "./TariffsFilters.sass"
 import SearchBar from "../../../components/SearchBar/SearchBar";
 import {useTariffs} from "../../../hooks/tariffs/useTariffs";
-
 import {useAuth} from "../../../hooks/users/useAuth";
 import LinkButton from "../../../components/LinkButton/LinkButton";
 import {variables} from "../../../utils/consts";
@@ -18,35 +17,30 @@ const TariffsFilters = ({refetch}) => {
         refetch()
     }
 
-
     return (
         <div className="tariffs-filters">
 
-            <h2>Поиск тарифов</h2>
-            {/* <SearchBar query={query} setQuery={setQuery} onSubmit={handleSubmit} /> */}
-        
+            <h2>Поиск веществ</h2>
+
             <div className="right-container" >
 
                 {is_moderator &&
                     <LinkButton to="/tariffs/add" bg={variables.primary}>
-                        Добавить работу
+                        Добавить вещество
                     </LinkButton>
                 }
 
                 <form className="search-form" onSubmit={handleSubmit}>
 
-                <SearchBar query={query} setQuery={setQuery} placeholder={"Поиск..."} />
+                    <SearchBar query={query} setQuery={setQuery} placeholder={"Поиск..."} />
 
-                <CustomButton bg={variables.primary} >
-                    Применить
-                </CustomButton>
+                    <CustomButton bg={variables.primary} >
+                        Применить
+                    </CustomButton>
 
                 </form>
-                
+
             </div>
-
-            
-
         </div>
     )
 }

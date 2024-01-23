@@ -17,8 +17,8 @@ const tariffSlice = createSlice({
 		updateDescription(state, action) {
 			state.tariff.description = action.payload
 		},
-		updatePrice(state, action) {
-			state.tariff.price = action.payload
+		updateHeatOutput(state, action) {
+			state.tariff.heat_output = action.payload
 		},
 		updateImage(state, action) {
 			state.tariff.image = action.payload
@@ -30,7 +30,7 @@ export const {
 	updateTariff,
 	updateName,
 	updateDescription,
-	updatePrice,
+	updateHeatOutput,
 	updateImage
 } = tariffSlice.actions;
 

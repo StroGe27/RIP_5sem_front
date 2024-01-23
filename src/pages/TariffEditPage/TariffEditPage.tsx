@@ -20,25 +20,20 @@ const TariffEditPage = () => {
 
     const {
         tariff,
-        setTariff,
         fetchTariff,
         setName,
         setDescription,
-        setPrice,
+        setHeatOutput,
         setImage
     } = useTariff()
 
     useEffect(() => {
         id && fetchTariff(id)
-
-        return () => {
-            setTariff(undefined)
-        }
     }, [])
 
     const [img, setImg] = useState<File | undefined>(undefined)
 
-    const handleFileChange = (e: { target: { files: any[]; }; }) => {
+    const handleFileChange = (e) => {
         if (e.target.files) {
             const img = e.target?.files[0]
             setImg(img)
@@ -51,7 +46,6 @@ const TariffEditPage = () => {
 
         form_data.append('name', tariff.name)
         form_data.append('description', tariff.description)
-        form_data.append('price', tariff.price)
 
         if (img != undefined) {
             form_data.append('image', img, img.name)
@@ -116,11 +110,9 @@ const TariffEditPage = () => {
 
                 <div className="info-container">
 
-                    <CustomInput placeholder="Название" value={tariff.name} setValue={setName} disabled={undefined} />
+                    <CustomInput placeholder="Название" value={tariff.name} setValue={setName} />
 
-                    <CustomTextarea placeholder="Адрес" value={tariff.description} setValue={setDescription} disabled={undefined} />
-
-                    <CustomInput placeholder="Цена" value={tariff.price} setValue={setPrice} disabled={undefined} />
+                    <CustomTextarea placeholder="Описание" value={tariff.description} setValue={setDescription} />
 
                     <div className="buttons-container">
 

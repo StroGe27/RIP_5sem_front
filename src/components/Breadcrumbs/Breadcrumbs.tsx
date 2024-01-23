@@ -19,14 +19,14 @@ const Breadcrumbs = () => {
 
     const topics = {
         "tariffs": "Тарифы",
-        "orders": "Заявки",
+        "orders": "Заявка",
         "home": "Главная",
         "login": "Вход",
         "register": "Регистрация",
         "profile": "Личный кабинет"
     }
 
-    const exclude_topics = ["edit", "create"]
+    const exclude_topics = ["edit"]
 
     const crumbs = location.pathname.split('/').filter(crumb => crumb !== '').map(crumb => {
 
@@ -50,13 +50,29 @@ const Breadcrumbs = () => {
             )
         }
 
+        if (currentLink.match(new RegExp('add')))
+        {
+            return (
+                <div className={"crumb"} key={crumb}>
+
+                    <Link to={currentLink}>
+                        Новый вещество
+                    </Link>
+
+                    <FaChevronRight className={"chevron-icon"}/>
+
+                </div>
+            )
+        }
+
+
         if (currentLink.match(new RegExp('orders/(\d*)')))
         {
             return (
                 <div className={"crumb"} key={crumb}>
 
                     <Link to={currentLink}>
-                        {is_draft ? "Новая заяка" : "Заявка №" + order?.id}
+                        {is_draft ? "Новая заявка" : "Заявка №" + order?.id}
                     </Link>
 
                     <FaChevronRight className={"chevron-icon"}/>

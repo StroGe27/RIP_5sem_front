@@ -4,7 +4,7 @@ import CustomTextarea from "../../components/CustomTextarea/CustomTextarea";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import mock from "/src/assets/default.jpg"
+import mock from "/src/assets/default.png"
 import {api} from "../../utils/api";
 import {useToken} from "../../hooks/users/useToken";
 import UploadButton from "../../components/UploadButton/UploadButton";
@@ -18,12 +18,11 @@ const TariffAddPage = () => {
 
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
-    const [price, setPrice] = useState("")
 
     const [imgFile, setImgFile] = useState<File | undefined>()
     const [imgURL, setImgURL] = useState<string | undefined>(mock)
 
-    const handleFileChange = (e: { target: { files: any[]; }; }) => {
+    const handleFileChange = (e) => {
         if (e.target.files) {
             const img = e.target?.files[0]
             setImgFile(img)
@@ -40,25 +39,24 @@ const TariffAddPage = () => {
         })
 
         if (response.status == 200){
-            const service_id = response.data["id"]
-            await updateService(service_id)
+            const tariff_id = response.data["id"]
+            await updateTariff(tariff_id)
         }
 
     }
 
-    const updateService = async (service_id: any) => {
+    const updateTariff = async (tariff_id) => {
 
         const form_data = new FormData()
 
         form_data.append('name', name)
         form_data.append('description', description)
-        form_data.append('price', price)
 
         if (imgFile != undefined) {
             form_data.append('image', imgFile, imgFile.name)
         }
 
-        const response = await api.put(`tariffs/${service_id}/update/`, form_data, {
+        const response = await api.put(`tariffs/${tariff_id}/update/`, form_data, {
             headers: {
                 'content-type': 'multipart/form-data',
                 'authorization': access_token
@@ -85,11 +83,9 @@ const TariffAddPage = () => {
 
                 <div className="info-container">
 
-                    <CustomInput placeholder="Название" value={name} setValue={setName} disabled={undefined} />
+                    <CustomInput placeholder="Название" value={name} setValue={setName} />
 
-                    <CustomTextarea placeholder="Описание" value={description} setValue={setDescription} disabled={undefined} />
-
-                    <CustomInput placeholder="Цена" value={price} setValue={setPrice}  disabled={undefined}  />
+                    <CustomTextarea placeholder="Описание" value={description} setValue={setDescription} />
 
                     <div className="buttons-container">
 

@@ -6,7 +6,8 @@ import Hamburger from "../Hamburger/Hamburger";
 
 const NavMenu = () => {
 
-    const {is_moderator, is_authenticated, auth, user_name} = useAuth()
+    const {is_authenticated, auth, user_name} = useAuth()
+
     const [isOpen, setIsOpen] = useState(false)
 
     useEffect(() => {
@@ -14,37 +15,36 @@ const NavMenu = () => {
     }, [])
 
     return (
-        <div className="menu-wrapper">
+        <div>
 
-            <Link to="/tariffs" className="menu-item">
-                <span>Тарифы</span>
-            </Link>
+            <div className={"menu-wrapper " + (isOpen ? "open" : "")}>
 
-            {is_moderator &&
-                <Link to="/tariffs-table" className="menu-item">
-                    <span>Таблица тарифов</span>
+                <Link to="/tariffs" className="menu-item" onClick={(e) => {setIsOpen(false)}}>
+                    <span>Тарифы</span>
                 </Link>
-            }
 
-            {is_authenticated &&
-                <Link to="/orders" className="menu-item">
-                    <span>Заявки</span>
-                </Link>
-            }
+                {is_authenticated &&
+                    <Link to="/orders" className="menu-item" onClick={(e) => {setIsOpen(false)}}>
+                        <span>Заявки</span>
+                    </Link>
+                }
 
-            {is_authenticated &&
-                <Link to="/profile" className="menu-item">
-                    <span>{user_name}</span>
-                </Link>
-            }
+                {is_authenticated &&
+                    <Link to="/profile" className="menu-item" onClick={(e) => {setIsOpen(false)}}>
+                        <span>{user_name}</span>
+                    </Link>
+                }
 
-            {!is_authenticated &&
-                <Link to="/login" className="menu-item">
-                    <span>Вход</span>
-                </Link>
-            }
+                {!is_authenticated &&
+                    <Link to="/login" className="menu-item" onClick={(e) => {setIsOpen(false)}}>
+                        <span>Вход</span>
+                    </Link>
+                }
+
+            </div>
 
             <Hamburger isOpen={isOpen} setIsOpen={setIsOpen} />
+
         </div>
     )
 }

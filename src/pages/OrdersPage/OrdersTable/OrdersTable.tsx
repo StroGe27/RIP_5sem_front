@@ -1,23 +1,19 @@
 import React from "react";
 import "./OrdersTable.sass"
-
 import {STATUSES, variables} from "/src/utils/consts";
 import {ru} from "/src/utils/momentLocalization";
 import moment from "moment";
 import {useQuery} from "react-query";
-
 import {useOrders} from "../../../hooks/orders/useOrders";
 import {useCustomTable} from "../../../hooks/other/useCustomTable";
 import CustomTable from "../../../components/CustomTable/CustomTable";
 import {useNavigate} from "react-router-dom"
 import OrdersFilters from "../OrdersFilters/OrdersFilters";
-
 import CustomButton from "../../../components/CustomButton/CustomButton";
 import {useAuth} from "../../../hooks/users/useAuth";
 import {useToken} from "../../../hooks/users/useToken";
 import {api} from "../../../utils/api";
-import {pluralDeliveryDate} from "../../../utils/plural";
-import { useEffect } from "react";
+import {pluralClinicalTrial} from "../../../utils/utils";
 
 const OrdersTable = () => {
 
@@ -31,12 +27,8 @@ const OrdersTable = () => {
 
     const columns = [
         {
-            Header: "№ заявки",
+            Header: "№",
             accessor: "id"
-        },
-        {
-            Header: "Имя пользователя",
-            accessor: "owner.name"
         },
         {
             Header: "Статус",
@@ -44,31 +36,17 @@ const OrdersTable = () => {
             Cell: ({ value }) => { return STATUSES.find(status => status.id == value).name }
         },
         {
-            Header: "Дата создания",
-            accessor: "date_created",
-            Cell: ({ value }) => { return moment(value).locale(ru()).format("D MMMM HH:mm") }
+            Header: "Пользователь",
+            accessor: "owner",
+            Cell: ({ value }) => { return value.name }
         },
         {
             Header: "Дата формирования",
             accessor: "date_formation",
             Cell: ({ value }) => { return moment(value).locale(ru()).format("D MMMM HH:mm") }
-        },
-        {
-            Header: "Дата Завершения",
-            accessor: "date_complete",
-            Cell: ({ value }) => {
-                if (!value) {
-                    return "Нет"
-                }
-
-                if (value < 0) {
-                    return "Не найдено"
-                }
-
-                return moment(value).locale(ru()).format("D MMMM HH:mm")
-            }
         }
     ]
+
     if (is_moderator) {
         columns.push({
             Header: "Действие",
@@ -87,7 +65,7 @@ const OrdersTable = () => {
         })
     }
 
-    const acceptOrder = async (order_id: any) => {
+    const acceptOrder = async (order_id) => {
 
         const formData = new FormData()
 
@@ -103,8 +81,8 @@ const OrdersTable = () => {
             refetch()
         }
     }
-    
-    const dismissOrder = async (order_id: any) => {
+
+    const dismissOrder = async (order_id) => {
 
         const formData = new FormData()
 
@@ -120,7 +98,7 @@ const OrdersTable = () => {
             refetch()
         }
     }
-
+    
     const { isLoading, data, isSuccess, refetch } = useQuery(
         ["orders"],
         () => searchOrders(),
@@ -148,7 +126,8 @@ const OrdersTable = () => {
     }
 
     return (
-        <div>
+        <div className="orders-table-wrapper">
+
             <CustomTable
                 getTableBodyProps={getTableBodyProps}
                 headerGroups={headerGroups}
@@ -156,7 +135,6 @@ const OrdersTable = () => {
                 prepareRow={prepareRow}
                 isLoading={isLoading}
                 onClick={handleClick}
-                // columns={columns}
             >
                 <OrdersFilters refetch={refetch}/>
             </CustomTable>

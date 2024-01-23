@@ -17,7 +17,7 @@ const OrderPage = () => {
 
     const { id } = useParams<{id: string}>();
 
-    const {order, setName, setDescription, fetchOrder, saveOrder, sendOrder, deleteOrder, setOrder} = useOrder()
+    const {order, fetchOrder, saveOrder, sendOrder, deleteOrder, setOrder} = useOrder()
 
     const [flag, setFlag] = useState(false)
 
@@ -26,8 +26,6 @@ const OrderPage = () => {
         
         return () => {
             setOrder(undefined)
-            setName("")
-            setDescription("")
         };
     }, [])
 
@@ -60,7 +58,6 @@ const OrderPage = () => {
         <TariffCard tariff={tariff} key={tariff.id} flag={flag}/>
     ))
 
-
     const ButtonsContainer = () => {
         return (
             <div className="buttons-wrapper">
@@ -84,7 +81,7 @@ const OrderPage = () => {
 
             <div className="order-tariffs-wrapper">
                 <div className="top">
-                    <h3>{is_draft ? "Новая заявка" : "Заявка №" + order?.id}</h3>
+                    <h3>{is_draft ? "Новая заявка" : "Заявка №" + order.id}</h3>
                 </div>
 
                 <div className="order-info-container">
@@ -92,8 +89,7 @@ const OrderPage = () => {
                     <span>Дата создания: {moment(order.date_created).locale(ru()).format("D MMMM HH:mm")}</span>
                     {[2, 3, 4].includes(order.status) && <span>Дата формирования: {moment(order.date_formation).locale(ru()).format("D MMMM HH:mm")}</span>}
                     {completed && <span>Дата завершения: {moment(order.date_complete).locale(ru()).format("D MMMM HH:mm")}</span> }
-                    {is_moderator && <span>Покупатель: {order.owner.name}</span> }
-                    {/* {is_moderator && <span>Модератор: {order.moderator.name}</span>} */}
+                    {is_moderator && <span>Пользователь: {order.owner.name}</span> }
                 </div>
 
                 <div className="title">

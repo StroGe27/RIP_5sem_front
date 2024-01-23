@@ -46,8 +46,9 @@ export function useOrders() {
 				'authorization': access_token
 			}
 		})
-		// data.filter(order => order.employer.name.includes(user))
-		return data
+
+		return data.filter(order => order.owner.name.includes(user))
+
 	}
 
 	return {

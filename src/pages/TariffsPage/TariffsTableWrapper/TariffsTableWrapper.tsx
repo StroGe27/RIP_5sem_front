@@ -23,7 +23,7 @@ const TariffsTableWrapper = () => {
     }
 
     return (
-        <div className="tariffs-wrapper">
+        <div>
             <TariffsTable isLoading={isLoading} data={data} isSuccess={isSuccess} refetch={refetch} />
         </div>
     )

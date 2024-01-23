@@ -1,8 +1,8 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {
 	updateDescription,
-	updateOrder,
-	updateName
+	updateName,
+	updateOrder
 } from "../../store/orders/orderSlice";
 import {useToken} from "../users/useToken";
 import {api} from "../../utils/api";
@@ -12,9 +12,6 @@ export function useOrder() {
 	const {access_token} = useToken()
 
 	const order = useSelector(state => state.order.order)
-
-	const name = useSelector(state => state.order.name)
-	const description = useSelector(state => state.order.description)
 
 	const is_draft = order?.status == 1
 
@@ -43,8 +40,6 @@ export function useOrder() {
 		if (response.status == 200)
 		{
 			setOrder(undefined)
-			setName("")
-			setDescription("")
 		}
 	}
 
@@ -59,8 +54,6 @@ export function useOrder() {
 		if (response.status == 200)
 		{
 			setOrder(undefined)
-			setName("")
-			setDescription("")
 		}
 
 	}
@@ -69,8 +62,8 @@ export function useOrder() {
 
 		const form_data = new FormData()
 
-		form_data.append('name', name)
-		form_data.append('description', description)
+		form_data.append('name', order.name)
+		form_data.append('description', order.description)
 
 		await api.put(`orders/${order.id}/update/`, form_data, {
 			headers: {
@@ -89,8 +82,6 @@ export function useOrder() {
 		})
 
 		setOrder(data)
-		setName(data["name"])
-		setDescription(data["description"])
 	}
 
 	const addTariffToOrder = async (tariff) => {
@@ -111,8 +102,6 @@ export function useOrder() {
 
 	return {
 		order,
-		name,
-		description,
 		is_draft,
 		setOrder,
 		setName,

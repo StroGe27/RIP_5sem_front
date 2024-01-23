@@ -14,11 +14,6 @@ const TariffsTable = ({isLoading, data, isSuccess, refetch}) => {
             Header: "Название",
             accessor: "name",
             Cell: ({ value }) => { return value }
-        },
-        {
-            Header: "Цена",
-            accessor: "price",
-            Cell: ({ value }) => { return value }
         }
     ]
 

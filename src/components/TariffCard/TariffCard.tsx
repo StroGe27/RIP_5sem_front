@@ -36,7 +36,7 @@ const TariffCard = ({ tariff, flag }: {tariff:Tariff}) => {
 
     const {access_token} = useToken()
 
-    const updateIndicatorValue = async () => {
+    const updateValue = async () => {
         const form_data = new FormData()
 
         form_data.append('months', value)
@@ -48,26 +48,27 @@ const TariffCard = ({ tariff, flag }: {tariff:Tariff}) => {
         })
     }
 
-    const fetchIndicatorValue = async () => {
+    const fetchValue = async () => {
         const {data} = await api.get(`orders/${order.id}/tariffs/${tariff.id}/`, {
             headers: {
                 'authorization': access_token
             }
         })
+
         setValue(data)
     }
 
     const [value, setValue] = useState()
 
     useEffect(() => {
-        location.pathname.includes("orders") && fetchIndicatorValue()
+        location.pathname.includes("orders") && fetchValue()
     }, [])
 
     useEffect(() => {
-        value && updateIndicatorValue()
+        value && updateValue()
     }, [flag])
-    
-    const is_chosen = order?.tariffs?.find(g => g.id == tariff.id)
+
+    const is_chosen = order?.tariffs.find(g => g.id == tariff.id)
 
     return (
         <div className="card-wrapper">
@@ -97,7 +98,7 @@ const TariffCard = ({ tariff, flag }: {tariff:Tariff}) => {
                             Подробнее
                         </CustomButton>
                     </Link>
-                    
+
                     {is_authenticated && !is_chosen && !is_moderator && location.pathname.includes("tariffs") &&
                         <CustomButton onClick={handleAddTariff} bg={variables.green}>Добавить</CustomButton>
                     }
