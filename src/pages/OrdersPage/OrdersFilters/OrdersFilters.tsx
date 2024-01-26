@@ -23,7 +23,7 @@ const OrdersFilters = ({refetch}) => {
 
             <div className="top-container">
 
-                <h3>Список косметики</h3>
+                <h3>Список тарифов</h3>
 
             </div>
 
