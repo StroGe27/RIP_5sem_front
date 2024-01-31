@@ -20,13 +20,13 @@ const TariffsFilters = ({refetch}) => {
     return (
         <div className="tariffs-filters">
 
-            <h2>Поиск веществ</h2>
+            <h2>Поиск тарифов</h2>
 
             <div className="right-container" >
 
                 {is_moderator &&
                     <LinkButton to="/tariffs/add" bg={variables.primary}>
-                        Добавить вещество
+                        Добавить тариф
                     </LinkButton>
                 }
 

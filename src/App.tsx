@@ -12,23 +12,25 @@ import TariffsPage from "./pages/TariffsPage/TariffsPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import {useAuth} from "./hooks/users/useAuth";
-import OrderConstructor from "./components/OrderConstructor/OrderConstructor";
-import OrderPage from "./pages/OrderPage/OrderPage";
-import OrdersPage from "./pages/OrdersPage/OrdersPage";
+import VirtualConstructor from "./components/VirtualConstructor/VirtualConstructor";
+import VirtualPage from "./pages/VirtualPage/VirtualPage";
+import VirtualsPage from "./pages/VirtualsPage/VirtualsPage";
 import TariffEditPage from "./pages/TariffEditPage/TariffEditPage";
 import TariffAddPage from "./pages/TariffAddPage/TariffAddPage";
+import TariffsTableWrapper from "./pages/TariffsPage/TariffsTableWrapper/TariffsTableWrapper";
+import TariffsList from "./pages/TariffsPage/TariffsList/TariffsList";
 
 
 const TopPanelWrapper = () => {
 
     const {is_authenticated, is_moderator} = useAuth()
 
-    const description = useLocation()
+    const location = useLocation()
 
     return (
         <div className="top-panel-wrapper">
             <Breadcrumbs />
-            {is_authenticated && !is_moderator && description.pathname.endsWith("tariffs") && <OrderConstructor /> }
+            {is_authenticated && !is_moderator && location.pathname.endsWith("tariffs") && <VirtualConstructor /> }
         </div>
     )
 }
@@ -43,7 +45,7 @@ function App() {
 
             <Provider store={store}>
 
-                <BrowserRouter basename="/rent">
+                <BrowserRouter basename="/rentvps">
 
                     <div className="App">
 
@@ -61,7 +63,9 @@ function App() {
 
                                     <Route path="/profile" element={<ProfilePage />} />
 
-                                    <Route path="/tariffs" element={<TariffsPage />} />
+                                    <Route path="/tariffs" element={<TariffsList />} />
+
+                                    <Route path="/tariffs-table" element={<TariffsTableWrapper />} />
 
                                     <Route path="/tariffs/add" element={<TariffAddPage />} />
 
@@ -71,9 +75,9 @@ function App() {
 
                                     <Route path="/profile" element={<ProfilePage />} />
 
-                                    <Route path="/orders/:id" element={<OrderPage />} />
+                                    <Route path="/virtuals/:id" element={<VirtualPage />} />
 
-                                    <Route path="/orders" element={<OrdersPage />} />
+                                    <Route path="/virtuals" element={<VirtualsPage />} />
 
                                     <Route path="/login" element={<LoginPage />} />
 

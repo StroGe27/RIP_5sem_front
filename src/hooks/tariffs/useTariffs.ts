@@ -4,7 +4,7 @@ import {
 	updateQuery
 } from "../../store/tariffs/tariffsSlice";
 import {api} from "../../utils/api";
-import {useOrder} from "../orders/useOrder";
+import {useVirtual} from "../virtuals/useVirtual";
 import {useToken} from "../users/useToken";
 
 export function useTariffs() {
@@ -13,7 +13,7 @@ export function useTariffs() {
 
 	const {access_token} = useToken()
 
-	const {setOrder, fetchOrder} = useOrder()
+	const {setVirtual, setVirtualId} = useVirtual()
 
 	const dispatch = useDispatch()
 
@@ -36,22 +36,33 @@ export function useTariffs() {
 			}
 		})
 
-		const draft_order_id = data["draft_order_id"]
-		if (draft_order_id) {
-			await fetchOrder(draft_order_id)
-		} else {
-			setOrder(undefined)
+		const draft_virtual_id = data["draft_virtual_id"]
+		setVirtualId(draft_virtual_id)
+
+		if (!draft_virtual_id) {
+			setVirtual(undefined)
 			navigate && navigate("/")
 		}
 
 		return data["tariffs"]
 	}
 
+	const deleteTariff = async (tariff) => {
+
+		await api.delete(`tariffs/${tariff.id}/delete/`, {
+			headers: {
+				'authorization': access_token
+			}
+		})
+	}
+
+
 	return {
 		tariffs,
 		setTariffs,
 		query,
 		setQuery,
-		searchTariffs
+		searchTariffs,
+		deleteTariff
 	};
 }

@@ -25,7 +25,7 @@ const TariffsList = () => {
     }
 
     const cards = data.map(tariff  => (
-        <TariffCard tariff={tariff} key={tariff.id}/>
+        <TariffCard tariff={tariff} key={tariff.id} refetch={refetch}/>
     ))
 
     return (

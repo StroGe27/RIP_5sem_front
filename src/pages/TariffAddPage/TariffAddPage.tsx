@@ -4,7 +4,7 @@ import CustomTextarea from "../../components/CustomTextarea/CustomTextarea";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import mock from "/src/assets/default.png"
+import mock from "/src/assets/default.jpg"
 import {api} from "../../utils/api";
 import {useToken} from "../../hooks/users/useToken";
 import UploadButton from "../../components/UploadButton/UploadButton";
@@ -18,6 +18,9 @@ const TariffAddPage = () => {
 
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
+    const [ram, setRam] = useState("")
+    const [ssd, setSsd] = useState("")
+    const [price, setPrice] = useState("")
 
     const [imgFile, setImgFile] = useState<File | undefined>()
     const [imgURL, setImgURL] = useState<string | undefined>(mock)
@@ -51,6 +54,9 @@ const TariffAddPage = () => {
 
         form_data.append('name', name)
         form_data.append('description', description)
+        form_data.append('ram', ram)
+        form_data.append('ssd', ssd)
+        form_data.append('price', price)
 
         if (imgFile != undefined) {
             form_data.append('image', imgFile, imgFile.name)
@@ -67,7 +73,6 @@ const TariffAddPage = () => {
             navigate("/tariffs/")
         }
     }
-
 
     return (
         <div className="add-page-wrapper">
@@ -86,6 +91,12 @@ const TariffAddPage = () => {
                     <CustomInput placeholder="Название" value={name} setValue={setName} />
 
                     <CustomTextarea placeholder="Описание" value={description} setValue={setDescription} />
+
+                    <CustomInput placeholder="Объем оперативной памяти" value={ram} setValue={setRam} />
+
+                    <CustomInput placeholder="Объем SSD хранилища" value={ssd} setValue={setSsd} />
+
+                    <CustomInput placeholder="Цена" value={price} setValue={setPrice} />
 
                     <div className="buttons-container">
 

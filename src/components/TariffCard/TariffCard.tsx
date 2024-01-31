@@ -2,73 +2,55 @@ import "./TariffCard.sass"
 import {Tariff} from "../../utils/types";
 import {Link} from "react-router-dom";
 import {useAuth} from "../../hooks/users/useAuth";
-import {useOrder} from "../../hooks/orders/useOrder";
+import {useVirtual} from "../../hooks/virtuals/useVirtual";
 import CustomButton from "../CustomButton/CustomButton";
 import {variables} from "../../utils/consts";
-import {api} from "../../utils/api";
-import {useEffect, useState} from "react";
-import {useToken} from "../../hooks/users/useToken";
-import CustomInput from "../CustomInput/CustomInput";
 import {useTariffs} from "../../hooks/tariffs/useTariffs";
-import {useNavigate} from "react-router-dom"
+import CustomInput from "../CustomInput/CustomInput";
+import {useState} from "react";
+import {useToken} from "../../hooks/users/useToken";
+import {api} from "../../utils/api";
 
-const TariffCard = ({ tariff, flag }: {tariff:Tariff}) => {
-
-    const navigate = useNavigate()
+const TariffCard = ({ tariff, refetch }: {tariff:Tariff}) => {
 
     const {is_authenticated, is_moderator} = useAuth()
 
-    const {searchTariffs} = useTariffs()
+    const {virtual, is_draft, addTariffToVirtual, deleteTariffFromVirtual} = useVirtual()
 
-    const {order, is_draft, addTariffToOrder, deleteTariffFromOrder} = useOrder()
+    const {deleteTariff} = useTariffs()
 
-    const handleAddTariff = async (e) => {
-        e.preventDefault()
-        await addTariffToOrder(tariff)
-        await searchTariffs()
-    }
-
-    const handleDeleteTariff = async (e) => {
-        e.preventDefault()
-        await deleteTariffFromOrder(tariff)
-        await searchTariffs(navigate)
-    }
+    const [value, setValue] = useState(tariff.months)
 
     const {access_token} = useToken()
 
-    const updateValue = async () => {
+    const handleSaveValue = async () => {
         const form_data = new FormData()
 
         form_data.append('months', value)
 
-        await api.put(`orders/${order.id}/update_tariff/${tariff.id}/`, form_data, {
+        await api.put(`virtuals/${virtual.id}/update_tariff/${tariff.id}/`, form_data, {
             headers: {
                 'authorization': access_token
             }
         })
     }
 
-    const fetchValue = async () => {
-        const {data} = await api.get(`orders/${order.id}/tariffs/${tariff.id}/`, {
-            headers: {
-                'authorization': access_token
-            }
-        })
-
-        setValue(data)
+    const handleAddTariff = async (e) => {
+        e.preventDefault()
+        await addTariffToVirtual(tariff)
+        refetch()
     }
 
-    const [value, setValue] = useState()
+    const handleDeleteTariffFromVirtual = async (e) => {
+        e.preventDefault()
+        await deleteTariffFromVirtual(tariff)
+    }
 
-    useEffect(() => {
-        location.pathname.includes("orders") && fetchValue()
-    }, [])
-
-    useEffect(() => {
-        value && updateValue()
-    }, [flag])
-
-    const is_chosen = order?.tariffs.find(g => g.id == tariff.id)
+    const handleDeleteTariff = async (e) => {
+        e.preventDefault()
+        await deleteTariff(tariff)
+        refetch()
+    }
 
     return (
         <div className="card-wrapper">
@@ -85,7 +67,7 @@ const TariffCard = ({ tariff, flag }: {tariff:Tariff}) => {
 
                 </div>
 
-                {location.pathname.includes("orders") &&
+                {location.pathname.includes("virtuals") &&
                     <div className="card-inputs-container">
                         <CustomInput placeholder="Кол-во месяцев" value={value} setValue={setValue} disabled={!is_draft}/>
                     </div>
@@ -93,21 +75,33 @@ const TariffCard = ({ tariff, flag }: {tariff:Tariff}) => {
 
                 <div className="content-bottom">
 
-                    <Link to={`/tariffs/${tariff.id}`}>
-                        <CustomButton bg={variables.primary}>
-                            Подробнее
-                        </CustomButton>
-                    </Link>
-
-                    {is_authenticated && !is_chosen && !is_moderator && location.pathname.includes("tariffs") &&
+                    {!is_moderator &&
+                        <Link to={`/tariffs/${tariff.id}`}>
+                            <CustomButton bg={variables.primary}>
+                                Подробнее
+                            </CustomButton>
+                        </Link>
+                    }
+                    
+                    {is_authenticated && !is_moderator && location.pathname.includes("tariffs") &&
                         <CustomButton onClick={handleAddTariff} bg={variables.green}>Добавить</CustomButton>
                     }
 
-                    {is_authenticated && is_chosen && location.pathname.includes("tariffs") &&
-                        <CustomButton onClick={handleDeleteTariff} bg={variables.red} >Удалить</CustomButton>
+                    {is_authenticated && !is_moderator && is_draft && location.pathname.includes("virtuals") &&
+                        <CustomButton onClick={handleDeleteTariffFromVirtual} bg={variables.red}>Удалить</CustomButton>
                     }
 
-                    {is_authenticated && !is_moderator && is_draft && location.pathname.includes("orders") &&
+                    {is_authenticated && !is_moderator && is_draft && location.pathname.includes("virtuals") &&
+                        <CustomButton onClick={handleSaveValue} bg={variables.green}>Сохранить</CustomButton>
+                    }
+
+                    {is_authenticated && is_moderator && location.pathname.includes("tariffs") &&
+                        <Link to={`/tariffs/${tariff.id}/edit`}>
+                            <CustomButton bg={variables.primary}>Редактировать</CustomButton>
+                        </Link>
+                    }
+
+                    {is_authenticated && is_moderator && location.pathname.includes("tariffs") &&
                         <CustomButton onClick={handleDeleteTariff} bg={variables.red}>Удалить</CustomButton>
                     }
 

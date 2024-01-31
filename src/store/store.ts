@@ -1,17 +1,17 @@
 import {configureStore} from "@reduxjs/toolkit";
 
 import tariffReducer from "./tariffs/tariffSlice"
-import draftOrderReducer from "./orders/orderSlice"
+import draftVirtualReducer from "./virtuals/virtualSlice"
 import authReducer from "./users/authSlice"
-import ordersReducer from "./orders/ordersSlice"
+import virtualsReducer from "./virtuals/virtualsSlice"
 import tariffsReducer  from "./tariffs/tariffsSlice"
 
 export default configureStore({
 	reducer: {
 		tariff: tariffReducer,
 		tariffs: tariffsReducer,
-		order: draftOrderReducer,
-		orders: ordersReducer,
+		virtual: draftVirtualReducer,
+		virtuals: virtualsReducer,
 		user: authReducer
 	}
 });

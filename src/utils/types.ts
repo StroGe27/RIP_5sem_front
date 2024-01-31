@@ -3,7 +3,8 @@ export interface Tariff {
     name: string,
     description: string,
     status: number,
-    image: string
+    image: string,
+    months: string
 }
 
 export interface User {
@@ -12,7 +13,7 @@ export interface User {
     email: string
 }
 
-export interface Order {
+export interface Virtual {
     id: number,
     status: number,
     owner: User,

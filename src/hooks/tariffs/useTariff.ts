@@ -3,7 +3,9 @@ import {
 	updateTariff,
 	updateName,
 	updateDescription,
-	updateHeatOutput,
+	updateRam,
+	updateSsd,
+	updatePrice,
 	updateImage
 } from "../../store/tariffs/tariffSlice";
 import {api} from "../../utils/api";
@@ -25,8 +27,16 @@ export function useTariff() {
 		dispatch(updateDescription(value))
 	}
 
-	const setHeatOutput = (value) => {
-		dispatch(updateHeatOutput(value))
+	const setRam = (value) => {
+		dispatch(updateRam(value))
+	}
+
+	const setSsd = (value) => {
+		dispatch(updateSsd(value))
+	}
+
+	const setPrice = (value) => {
+		dispatch(updatePrice(value))
 	}
 
 	const setImage = (value) => {
@@ -47,7 +57,9 @@ export function useTariff() {
 		fetchTariff,
 		setName,
 		setDescription,
-		setHeatOutput,
+		setRam,
+		setSsd,
+		setPrice,
 		setImage
 	};
 }

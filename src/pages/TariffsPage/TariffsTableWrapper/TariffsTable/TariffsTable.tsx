@@ -14,6 +14,16 @@ const TariffsTable = ({isLoading, data, isSuccess, refetch}) => {
             Header: "Название",
             accessor: "name",
             Cell: ({ value }) => { return value }
+        },
+        {
+            Header: "Обьем RAM",
+            accessor: "ram",
+            Cell: ({ value }) => { return value }
+        },
+        {
+            Header: "Обьем SSD",
+            accessor: "ssd",
+            Cell: ({ value }) => { return value }
         }
     ]
 

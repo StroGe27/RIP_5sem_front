@@ -46,6 +46,18 @@ const TariffPage = () => {
 
                     <span>Описание: {tariff.description}</span>
 
+                    <br />
+
+                    <span>Оперативная память: {tariff.ram} гб</span>
+
+                    <br />
+
+                    <span>Размер SSD хранилища: {tariff.ssd} гб</span>
+
+                    <br />
+
+                    <span>Цена за месяц аренды: {tariff.price} рублей</span>
+
                 </div>
 
             </div>

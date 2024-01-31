@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import {FaChevronRight} from "react-icons/fa6";
 import {FaHome} from "react-icons/fa";
 import {useTariff} from "../../hooks/tariffs/useTariff";
-import {useOrder} from "../../hooks/orders/useOrder";
+import {useVirtual} from "../../hooks/virtuals/useVirtual";
 
 const Breadcrumbs = () => {
 
@@ -11,7 +11,7 @@ const Breadcrumbs = () => {
 
     const {tariff, setTariff} = useTariff()
 
-    const { order, is_draft } = useOrder()
+    const { virtual, is_draft } = useVirtual()
 
     let currentLink = ''
 
@@ -19,7 +19,8 @@ const Breadcrumbs = () => {
 
     const topics = {
         "tariffs": "Тарифы",
-        "orders": "Заявка",
+        "tariffs-table": "Тарифы",
+        "virtuals": "Виртуальные машины",
         "home": "Главная",
         "login": "Вход",
         "register": "Регистрация",
@@ -56,7 +57,7 @@ const Breadcrumbs = () => {
                 <div className={"crumb"} key={crumb}>
 
                     <Link to={currentLink}>
-                        Новый вещество
+                        Новый тариф
                     </Link>
 
                     <FaChevronRight className={"chevron-icon"}/>
@@ -66,13 +67,13 @@ const Breadcrumbs = () => {
         }
 
 
-        if (currentLink.match(new RegExp('orders/(\d*)')))
+        if (currentLink.match(new RegExp('virtuals/(\d*)')))
         {
             return (
                 <div className={"crumb"} key={crumb}>
 
                     <Link to={currentLink}>
-                        {is_draft ? "Новая заявка" : "Заявка №" + order?.id}
+                        {is_draft ? "Новая виртуальная машина" : "Виртуальная машина №" + virtual?.id}
                     </Link>
 
                     <FaChevronRight className={"chevron-icon"}/>

@@ -23,7 +23,9 @@ const TariffEditPage = () => {
         fetchTariff,
         setName,
         setDescription,
-        setHeatOutput,
+        setRam,
+        setSsd,
+        setPrice,
         setImage
     } = useTariff()
 
@@ -46,6 +48,9 @@ const TariffEditPage = () => {
 
         form_data.append('name', tariff.name)
         form_data.append('description', tariff.description)
+        form_data.append('ram', tariff.ram)
+        form_data.append('ssd', tariff.ssd)
+        form_data.append('price', tariff.price)
 
         if (img != undefined) {
             form_data.append('image', img, img.name)
@@ -113,6 +118,12 @@ const TariffEditPage = () => {
                     <CustomInput placeholder="Название" value={tariff.name} setValue={setName} />
 
                     <CustomTextarea placeholder="Описание" value={tariff.description} setValue={setDescription} />
+
+                    <CustomInput placeholder="Объем оперативной памяти" value={tariff.ram} setValue={setRam} />
+
+                    <CustomInput placeholder="Объем SSD хранилища" value={tariff.ssd} setValue={setSsd} />
+
+                    <CustomInput placeholder="Цена" value={tariff.price} setValue={setPrice} />
 
                     <div className="buttons-container">
 

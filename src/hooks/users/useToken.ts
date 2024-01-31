@@ -6,11 +6,11 @@ export function useToken() {
 	const access_token = cookies.get("access_token");
 
 	const setAccessToken = (value) => {
-		cookies.set("access_token", value, {path: '/rent', expires: new Date(Date.now()+25920000)})
+		cookies.set("access_token", value, {path: '/rentvps', expires: new Date(Date.now()+25920000)})
 	}
 
 	const resetAccessToken = () => {
-		cookies.set("access_token", undefined, {path: '/rent', expires: new Date(Date.now()+25920000)})
+		cookies.set("access_token", undefined, {path: '/rentvps', expires: new Date(Date.now()+25920000)})
 	}
 
 	return {
